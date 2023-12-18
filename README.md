@@ -44,6 +44,73 @@
 ### JSX의 역할
   - JSX로 작성된 코드는 모두 JS코드로 변환
 - 리액트는 JSX코드 모두 createElement() 함수를 사용하는 코드로 변환
+  ```jsx
+  - React.createElement(
+    type,
+    [props],
+    [...children]
+  )
+  ```
 ### JSX 장점
   - 코드가 간결해짐
   - 가독성 향상
+### HTML 태그 중간이 아닌 태그의 속성에 값을 넣고 싶을 때
+  - 큰 따옴표 사이에 문자열 넣기
+  ```jsx
+  const element = <div tabIndex="0"></div>
+  ```
+  - 중괄호 사이에 자바스크립트 코드 넣기
+    ```jsx
+  const element = <img src={user.avatarUrl}></img>
+  ```
+  - JSX에서 중괄호를 사용하면 무조건 JS코드가 들어감
+  
+## 4
+### 엘리먼트
+  - Element(요소, 성분)
+    - 리액트 앱의 가장 작은 블록들
+    - 화면에 나타나는 내용을 기술하는 JS객체
+    - 리액트 엘리먼트는 DOM 엘리먼트의 가상 표현
+    ```jsx
+    - React.createElement(
+      type,
+      [props],
+      [...children]
+    )
+    ```
+      - type
+        - HTML 태그이름이 문자열로 들어가거나 또 다른 리액트 컴포넌트가 들어감
+      - props
+        - 엘리먼트의 속성
+      - children
+        - 해당 엘리먼트의 자식 엘리먼트
+  - 생김새
+    - 엘리먼트는 JS객체 형태로 존재
+    - 컴포넌트 유형과 속성 및 내부의 모든 지식에 대한 정보를 포함하고 있는 일반적인 JS객채
+  - 특징
+    - 불변성
+    - 생성 후에는 자식이나 속성을 바꿀 수 없음
+  - Element 렌더링
+    ```jsx
+    <div id="root"></div>
+    ```
+      - root DOM node
+      - div 태그 안에 리액트 엘리먼트들이 렌더링됨
+    - 렌더링을 위해 ReactDOM의 createRoot() 함수로 만든 render() 함수 사용
+      - 리액트 엘리먼트를 HTML 엘리먼트에 렌더링하는 역할
+        ```jsx
+        const element = <h1>안녕, 리액트</h1>
+        const root = ReactDOM.createRoot(document.getElementById('root'))
+        root.render(element)
+        ```
+      - 엘리먼트를 하나 생성하고 생성된 엘리먼트를 root div에 렌더링
+      - 리액트의 엘리먼트와 HTML의 엘리먼트는 다른 개념
+        - 리액트의 엘리먼트
+          - Virtual DOM에 존재
+        - HTML 엘리먼트
+          - 실제 브라우저의 DOM에 존재
+        - 리액트의 엘리먼트가 렌더링되는 과정 = Virtual DOM 에서 실제 DOM으로 이동하는 과정
+    - 렌더링되는 과정은 Virtual DOM에서 실제 DOM으로 이동하는 과정
+  - 렌더링된 엘리먼트 업데이트
+    - 엘리먼트는 한 번 생성되면 바꿀 수 없기 때문에 엘리먼트를 업데이트하기 위해서는 다시 생성해야 함
+    - 기존 엘리먼트를 변경하는 것이 아닌 새로운 엘리먼트를 생성해서 바꿔치기 하는 것
