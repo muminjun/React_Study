@@ -1,0 +1,23 @@
+.TodoMain {
+  width: 70%;
+  margin-top: 5rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.app-title {
+  background-color: rgb(50, 115, 189);
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 7rem;
+}
+
+.sub-title {
+  background-color: white;
+}

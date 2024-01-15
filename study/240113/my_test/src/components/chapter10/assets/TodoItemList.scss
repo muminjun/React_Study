@@ -1,0 +1,56 @@
+.TodoItemList {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  align-items: center;
+
+  &:nth-child(even) { // 모든 요소 중 짝수(even)번째 요소 <=> 홀수(odd)
+    background: #f3f3f3;
+  }
+  
+  .checkBox {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    svg {
+      font-size: 1.5rem;
+      &:hover {
+        color: #707070;
+      }
+    }
+    .todoItem {
+      flex: 1;
+      margin-left: 5px;
+      &:hover {
+        color: #707070;
+      }
+    }
+    &.checked {
+      svg {
+        color: #22b8cf;
+      }
+      .todoItem {
+        color: #adb5bd;
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  .delete {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    color: #ff6b6b;
+    svg {
+      font-size: 1.5rem;
+    }
+    &:hover {
+      color: #ff8787;
+    }
+  }
+
+  & + & {
+    border-top: solid #f3f3f3 1px;
+  }
+}
