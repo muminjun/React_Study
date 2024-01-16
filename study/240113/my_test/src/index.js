@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+// import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import EventPractice from './components/chapter04/event';
@@ -14,6 +14,7 @@ import Component from './components/chapter08/Ref_2';
 import SassTest from './components/chapter09/SassTest';
 import Home from './components/chapter10/pages/Home';
 import Calender from './components/calender/Calender';
+import MyCalendar from './components/NewCalendar/NewCalendar';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -29,7 +30,8 @@ root.render(
     {/* <Component /> */}
     {/* <SassTest /> */}
     {/* <Home /> */}
-    <Calender />
+    {/* <Calender /> */}
+    <MyCalendar />
   </React.StrictMode>
 );
 

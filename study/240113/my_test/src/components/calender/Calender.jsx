@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import classNames from "classnames/bind";
-import style from "./Calender.module.scss";
+import style from "./Calender.module.scss"
 
 const cx = classNames.bind(style);
 
@@ -48,7 +48,6 @@ const Calendar = () => {
     }
     return (
       <select
-        // className="monthSelect"
         onChange={changeSelectMonth}
         value={selectedMonth}
       >
@@ -71,7 +70,7 @@ const Calendar = () => {
     }
     return (
       <select
-        // className="yearSelect"
+        className="yearSelect"
         onChange={changeSelectYear}
         value={selectedYear}
       >
@@ -88,7 +87,7 @@ const Calendar = () => {
   };
 
   const returnWeek = useCallback(() => {
-    //요일 반환
+    //요일 반환 함수
     let weekArr = [];
     week.forEach((v) => {
       weekArr.push(
@@ -108,7 +107,7 @@ const Calendar = () => {
   }, []);
 
   const returnDay = useCallback(() => {
-    //알짜 반화
+    //선택된 달의 날짜들 반환 함수
     let dayArr = [];
 
     for (const nowDay of week) {
