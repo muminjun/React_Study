@@ -13,6 +13,7 @@ import Average_3 from './components/chapter08/Ref';
 import Component from './components/chapter08/Ref_2';
 import SassTest from './components/chapter09/SassTest';
 import Home from './components/chapter10/pages/Home';
+import Calender from './components/calender/Calender';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -27,7 +28,8 @@ root.render(
     {/* <Average_3 /> */}
     {/* <Component /> */}
     {/* <SassTest /> */}
-    <Home />
+    {/* <Home /> */}
+    <Calender />
   </React.StrictMode>
 );
 
