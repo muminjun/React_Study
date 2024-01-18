@@ -1,7 +1,7 @@
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import moment from 'moment';
 
-export default function Toolbar(props) {
+function Toolbar(props) {
   const {
     date,
   } = props;
@@ -13,17 +13,16 @@ export default function Toolbar(props) {
   return (
     <div className="rbc-toolbar">
       <span className="rbc-btn-group">
-
-        <button type="button" onClick={navigate.bind(null, 'PREV')}>
-          <FaArrowAltCircleLeft />
-        </button>
-
-        <span>{`${date.getFullYear()}년 ${date.getMonth() + 1}월`}</span>
-
-        <button type="button" onClick={navigate.bind(null, 'NEXT')}>
-          <FaArrowAltCircleRight />
-        </button>
-
+        <div>
+          <button type="button" onClick={navigate.bind(null, 'PREV')}>
+            <FaArrowAltCircleLeft />
+          </button>
+          <span>{`${date.getFullYear()}년 ${date.getMonth() + 1}월`}</span>
+          <button type="button" onClick={navigate.bind(null, 'NEXT')}>
+            <FaArrowAltCircleRight />
+          </button>
+        </div>
+        
         <button type="button" onClick={navigate.bind(null, 'TODAY')}>
           {moment().format('D')}
         </button>
@@ -31,3 +30,5 @@ export default function Toolbar(props) {
     </div>
   );
 }
+
+export default Toolbar
