@@ -16,11 +16,9 @@ function MyCalendar () {
   const handleDateClick = (info) => {
     setIsDayModal(!isDayModal);
 
-    // 클릭한 날짜에 있는 모든 이벤트를 가져오는 함수
-    const events = info.view.calendar.getEvents().filter(event => {
+    const events = info.view.calendar.getEvents().filter(event => {   // 클릭한 날짜에 있는 모든 이벤트를 가져오는 filter
       const { start, end } = event;
-      // 이벤트의 시작일과 종료일 사이에 있는지 확인
-      return info.date >= start && info.date < end;
+      return info.date >= start && info.date < end;                   // 이벤트의 시작일과 종료일 사이에 있는지 확인
     });
 
     const eventDetails = events.map(event => ({
