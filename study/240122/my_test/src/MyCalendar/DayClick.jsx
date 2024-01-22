@@ -5,22 +5,23 @@ function DayClick ({now, state}) {
   const [day, setDay] = useState('')
 
   useEffect(() => {
-    if (now.dayEl.cellIndex === 0) {
+    if (now.dayIndex === 0) {
       setDay('일요일')
-    } else if ( now.dayEl.cellIndex === 1 ) {
+    } else if (now.dayIndex === 1 ) {
       setDay('월요일')
-    } else if ( now.dayEl.cellIndex === 2 ) {
+    } else if (now.dayIndex === 2 ) {
       setDay('화요일')
-    } else if ( now.dayEl.cellIndex === 3 ) {
+    } else if (now.dayIndex === 3 ) {
       setDay('수요일')
-    } else if ( now.dayEl.cellIndex === 4 ) {
+    } else if (now.dayIndex === 4 ) {
       setDay('목요일')
-    } else if ( now.dayEl.cellIndex === 5 ) {
+    } else if (now.dayIndex === 5 ) {
       setDay('금요일')
-    } else if ( now.dayEl.cellIndex === 6 ) {
+    } else if (now.dayIndex === 6 ) {
       setDay('토요일')
     }
     dialogRef.current.showModal();
+    console.log(now)
   })
 
   const closeModal = (e) => { 
@@ -43,16 +44,22 @@ function DayClick ({now, state}) {
         <div>
           <header>
             <div>
-              {now.dayEl.innerText}
+              {now.date.slice(8)}
             </div>
             <div>
               {day}
             </div>
           </header>
           <hr />
-          <div>
-            해보자..
-          </div>
+          {now.events.map((event, index) => (
+            <div key={index}>
+              <h3>{event.title}</h3>
+              <p>시작일: {event.start}</p>
+              <p>종료일: {event.end}</p>
+              <p>내용: {event.comment}</p>
+              <p>색: {event.color}</p>
+            </div>
+          ))}
         </div>
       </dialog>
     </>

@@ -1,2 +1,7 @@
-.fc-day-number.fc-sat.fc-past { color:#0000FF; }
-.fc-day-number.fc-sun.fc-past { color:#FF0000; }
+.fc-day-sun a {
+  color: #FF5858;
+}
+
+.fc-day-sat a {
+  color: #41AFFF;
+}

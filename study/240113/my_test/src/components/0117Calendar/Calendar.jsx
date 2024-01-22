@@ -8,7 +8,7 @@ import { IoAddCircle } from "react-icons/io5";
 
 const MyCalendar = () => {
   moment.locale('ko-KR');
-  const localizer = momentLocalizer(moment);
+  const localizer = momentLocalizer(moment);      // 현지 시간 양식
   const [event, setEvent] = useState('');
   const [eventList, setEventList] = useState([]);
   const [id, setId] = useState(1);
