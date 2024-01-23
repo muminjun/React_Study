@@ -5,3 +5,63 @@
 .fc-day-sat a {
   color: #41AFFF;
 }
+
+.fc-header-toolbar {
+  padding-top: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.fc .fc-daygrid-day-top {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: white;
+  border: 2px solid #6AE3E3;
+  border-radius: 10px;
+}
+
+.fc .fc-daygrid-day.fc-day-today a{
+  background-color: #BFF4F4;
+  border-radius: 15px;
+  padding:5px;
+  font-weight: bold;
+}
+
+.FFCECE {
+  background-color:#FFCECE;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}
+
+.FFFCBA {
+  background-color:#FFFCBA;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}
+
+.DDFBC6 {
+  background-color:#DDFBC6;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}
+
+.E3EEFF {
+  background-color:#E3EEFF;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}
+
+.F0E8FF {
+  background-color:#F0E8FF;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}

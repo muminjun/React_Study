@@ -21,7 +21,6 @@ function DayClick ({now, state}) {
       setDay('토요일')
     }
     dialogRef.current.showModal();
-    console.log(now)
   })
 
   const closeModal = (e) => { 
@@ -53,11 +52,13 @@ function DayClick ({now, state}) {
           <hr />
           {now.events.map((event, index) => (
             <div key={index}>
-              <h3>{event.title}</h3>
+              <div>
+                <h3>{event.title}</h3>
+                <div className={event.color.slice(1)}></div>
+              </div>
+              
               <p>시작일: {event.start}</p>
-              <p>종료일: {event.end}</p>
-              <p>내용: {event.comment}</p>
-              <p>색: {event.color}</p>
+              <p>종료일: {event.end}</p> 
             </div>
           ))}
         </div>
