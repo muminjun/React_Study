@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from "react";
+import React, {useEffect, useState} from "react";
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import interactionPlugin from '@fullcalendar/interaction';
@@ -7,6 +7,7 @@ import locale from '@fullcalendar/core/locales/ko';
 import "./MyCalendar.scss" 
 import DayClick from "./DayClick.jsx"
 import CreateEvent from "./CreateEvent.jsx";
+import axios from "axios";
 
 function MyCalendar () {
   const [isDayModal, setIsDayModal] = useState(false)
@@ -14,38 +15,73 @@ function MyCalendar () {
   const [now, setNow] = useState('')
   const [eventList, setEventList] = useState([])
   const today = new Date().getDate()
+  const [weekWeather, setWeekWeather] = useState([])
+  const API_KEY = '87246d75e1ce26e1392a087b3d1d88c5'
 
-  // 특정 일을 클릭하면 그 날의 모달을 띄우는 함수
-  const handleDateClick = (info) => {
-    setIsDayModal(!isDayModal);
 
-    const events = info.view.calendar.getEvents().filter(event => {   // 클릭한 날짜에 있는 모든 이벤트를 가져오는 filter
-      const { start, end } = event;
-      return info.date >= start && info.date < end;                   // 이벤트의 시작일과 종료일 사이에 있는지 확인
-    });
 
-    const eventDetails = events.map(event => ({
-      title: event.title,
-      start: event.startStr,
+  useEffect(() => {
+    axios.get("")
+      .then((res) => {
+        setEventList(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
 
-      // event의 end 일자에서 -1 하는 식(fullCalendar는 end가 이벤트가 끝난 다음 날이라고 인식해서.)
-      end: new Date(new Date(event.endStr).setDate(new Date(event.endStr).getDate() - 1)).toISOString().split('T')[0],
-      color: event.backgroundColor,
-    }));    
-    setNow({ date: info.dateStr, dayIndex: info.dayEl.cellIndex, events: eventDetails });
-  };
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const lat = pos.coords.latitude
+      const lon = pos.coords.longitude
+      getWeekWeather(lat, lon)
+    })
+  }, [])
+
+  const getWeekWeather = async (lat, lon) => {
+    try{
+      const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`)
+      const weatherIcon = `http://openweathermap.org/img/wn/${res.data.weather[0].icon}.png`;
+      setWeekWeather(weatherIcon);  // 여기를 수정하였습니다.
+    } catch(err) {
+      console.log(err)
+    }
+  }
   
+
   const handleCreateEvent = () => {
-    setIsCreateModal(!isCreateModal)
+    setIsCreateModal(prevState => !isCreateModal)
   }
 
-  // 날짜에서 "일"을 제거 하는 함수
+  const handleDateClick = (info) => {                                       // 특정 일을 클릭하면 그 날의 모달을 띄우는 함수
+    setIsDayModal(prevState => !isDayModal);
+
+    const events = info.view.calendar.getEvents().filter(event => {         // 클릭한 날짜에 있는 모든 이벤트를 가져오는 filter
+      const { start, end } = event;
+      return info.date >= start && info.date < end;                         // 이벤트의 시작일과 종료일 사이에 있는지 확인
+    });
+
+    const eventDetails = events.map(event => ({                             // 특정 날에 포함된 이벤트의 항목들
+      title: event.title,
+      start: event.startStr,
+      end: new Date(new Date(event.endStr).setDate(new Date(event.endStr).getDate() - 1)).toISOString().split('T')[0],    // FullCalendar 특성상, end를 마지막날이라고 생각하여 라벨이 안채워지므로 end +1 하여 저장 후, 조회 시 -1 함.
+      color: event.backgroundColor,
+    }));
+    
+    setNow({ date: info.dateStr, dayIndex: info.dayEl.cellIndex, events: eventDetails });
+  };
+
   const numberText = (e) => {
     const day = document.createElement("a");
     day.classList.add("fc-daygrid-day-number");
     day.innerHTML = e.dayNumberText.replace("일", "");
-    return { html: day.outerHTML };
-  };  
+    
+    if (weekWeather) {
+      const icon = document.createElement("img");
+      icon.src = weekWeather;
+      return { html: day.outerHTML + icon.outerHTML };
+    } else {
+      return { html: day.outerHTML };
+    }
+  };
 
   return (
     <>
@@ -75,59 +111,3 @@ function MyCalendar () {
 }
 
 export default MyCalendar
-
-
-
-{/*
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-function EventComponent() {
-  const [event, setEvent] = useState({
-    id: 1,
-    title: '11111',
-    start: '2024-01-05',
-    end: '2024-01-08',
-    comment: 'test1',
-    color: 'red'
-  });
-
-  useEffect(() => {
-    const updateEvent = async () => {
-      try {
-        // 'end' 날짜를 파싱하여 JavaScript Date 객체로 변환
-        const endDate = new Date(event.end);
-        
-        // 'end' 날짜에 1일을 더한 새로운 날짜 계산
-        endDate.setDate(endDate.getDate() + 1);
-
-        // 새로운 'end' 날짜를 문자열로 변환하여 업데이트
-        const updatedEvent = { ...event, end: endDate.toISOString().split('T')[0] };
-
-        // 서버로 모든 이벤트 전송
-        await axios.post('/api/updateEvents', updatedEvent);
-
-        // 상태 업데이트
-        setEvent(updatedEvent);
-      } catch (error) {
-        console.error('이벤트 업데이트 실패:', error);
-      }
-    };
-
-    updateEvent();
-  }, []);
-
-  return (
-    <div>
-      <p>Event ID: {event.id}</p>
-      <p>Title: {event.title}</p>
-      <p>Start: {event.start}</p>
-      <p>End: {event.end}</p>
-      <p>Comment: {event.comment}</p>
-      <p>Color: {event.color}</p>
-    </div>
-  );
-}
-
-export default EventComponent;
-*/}

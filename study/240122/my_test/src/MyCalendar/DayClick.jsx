@@ -1,8 +1,17 @@
 import React, {useState, useRef, useEffect} from "react";
+import "./MyCalendar.scss"
 
 function DayClick ({now, state}) {
   const dialogRef = useRef();
   const [day, setDay] = useState('')
+  const [nowColor, setNowColor] = useState('')
+  const colorList = [
+    { value: "FFCECE", label:"red"},
+    { value: "FFFCBA", label:"yellow"},
+    { value: "DDFBC6", label:"green"},
+    { value: "E3EEFF", label:"blue"},
+    { value: "F0E8FF", label:"pupple"},
+  ]
 
   useEffect(() => {
     if (now.dayIndex === 0) {
@@ -20,6 +29,9 @@ function DayClick ({now, state}) {
     } else if (now.dayIndex === 6 ) {
       setDay('토요일')
     }
+
+    // 실험해보기
+    setNowColor(colorList.find((v) => v.value === now.events.color))
     dialogRef.current.showModal();
   })
 
@@ -42,21 +54,17 @@ function DayClick ({now, state}) {
       <dialog ref={dialogRef} onClick={closeModal}>
         <div>
           <header>
-            <div>
-              {now.date.slice(8)}
-            </div>
-            <div>
-              {day}
-            </div>
+            <div>{now.date.slice(8)}</div>
+            <div>{day}</div>
           </header>
+
           <hr />
           {now.events.map((event, index) => (
             <div key={index}>
               <div>
-                <h3>{event.title}</h3>
-                <div className={event.color.slice(1)}></div>
+                <h3 className={nowColor}>{event.title}</h3>
               </div>
-              
+
               <p>시작일: {event.start}</p>
               <p>종료일: {event.end}</p> 
             </div>

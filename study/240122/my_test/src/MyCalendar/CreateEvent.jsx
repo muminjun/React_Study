@@ -1,5 +1,7 @@
-import React, {useEffect, useState, useRef, useCallback} from "react";
+import React, {useEffect, useState, useRef} from "react";
+
 import "./MyCalendar.scss"
+import axios from "axios";
 
 function CreateEvent ({state, event}) {
 
@@ -7,21 +9,21 @@ function CreateEvent ({state, event}) {
   const [title, setTitle] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
-  const [nowColor, setNowColor] = useState('FFCECE')
+  const [nowColor, setNowColor] = useState('red')
   
   const colorList = [
-    { value: "FFCECE", label:"Red", color:'#FFCECE' },
-    { value: "FFFCBA", label:"Yellow", color:'#FFFCBA' },
-    { value: "DDFBC6", label:"Green", color:'#DDFBC6' },
-    { value: "E3EEFF", label:"Blue", color:'#E3EEFF' },
-    { value: "F0E8FF", label:"Pupple", color:'#F0E8FF' },
+    { value: "FFCECE", label:"red"},
+    { value: "FFFCBA", label:"yellow"},
+    { value: "DDFBC6", label:"green"},
+    { value: "E3EEFF", label:"blue"},
+    { value: "F0E8FF", label:"pupple"},
   ]
   
   useEffect (() => {
     dialogRef.current.showModal();
   }, [])
 
-  const closeModal = (e) => { 
+  const closeModal = () => { 
     dialogRef.current.close();
     state(!state)
   };
@@ -48,11 +50,24 @@ function CreateEvent ({state, event}) {
     state(!state)
   }
 
-  const createInfo = (e) => {
-    
+  const createInfo = async (e) => {
     e.preventDefault()
-    dialogRef.current.close();
-    state(!state)
+
+    const newEvent = {
+      title: title,
+      start: startDate,
+      end: new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1)).toISOString().split('T')[0],
+      color: `#${colorList.find((v) => v.label === nowColor).value}`,
+    }
+
+    try {
+      const res = await axios.post("", newEvent)
+      console.log(res)
+      event(prevEvent => [...prevEvent, newEvent])
+      state(!state)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -65,18 +80,19 @@ function CreateEvent ({state, event}) {
           </header>
 
           <form>
-            <input type="text" value={title} onChange={titleChange} placeholder="제목"/>
+            <input type="text" value={title} onChange={titleChange} placeholder="제목" required/>
             <div className={nowColor}></div>
-            <select name="colorSelect" id="colorSelect " value={nowColor} onChange={colorChange}>
+
+            <select name="colorSelect" id="colorSelect " value={nowColor} onChange={colorChange} required>
               {colorList.map((color) => (
-                <option key={color.label} className={color.value} value={color.value}>
+                <option key={color.label} className={color.label} value={color.label}>
                 </option>
               ))}
             </select>
-            <input type="date" value={startDate} onChange={startDateChange}/> 시작일
-            <input type="date" value={endDate} onChange={endDateChange}/> 종료일
+            시작일<input type="date" value={startDate} onChange={startDateChange} required/>
+            종료일<input type="date" value={endDate} onChange={endDateChange} required/>
             <button onClick={cencleInfo}>취소</button>
-            <button onClick={createInfo}>저장</button>
+            <input type="submit" value="추가" onSubmit={createInfo} />
           </form>
         </div>
       </dialog>

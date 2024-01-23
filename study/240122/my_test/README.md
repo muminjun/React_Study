@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+```js
+axios.post("", newEvent)
+  .then((res) => {
+    event(prevEvent => [...prevEvent, newEvent])
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+state(!state)
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+코드에서 볼 수 있듯이, axios.post의 결과를 기다리지 않고 바로 state(!state)를 실행하고 있습니다.
+이는 비동기 작업인 axios.post가 완료되기 전에 상태를 변경하므로, 이로 인해 컴포넌트가 재렌더링되어 페이지가 깜빡거리는 것입니다.
 
-## Available Scripts
+이를 해결하기 위해 axios.post의 결과를 기다린 후에 상태를 변경하도록 코드를 수정해야 합니다. 아래와 같이 async/await를 사용하여 비동기 작업을 처리할 수 있습니다:
 
-In the project directory, you can run:
+```js
+const createInfo = async (e) => {
+  e.preventDefault()
+      
+  const newEvent = {
+    title: title,
+    start: startDate,
+    end: new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1)).toISOString().split('T')[0],
+    color: `#${colorList.find((v) => v.label === nowColor).value}`,
+  }
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  try {
+    const res = await axios.post("", newEvent)
+    event(prevEvent => [...prevEvent, newEvent])
+    state(!state)
+  } catch (err) {
+    console.log(err)
+  }
+}
+```
