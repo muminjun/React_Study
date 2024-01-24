@@ -1,38 +1,65 @@
 import React, {useEffect, useState, useRef} from "react";
-import "./MyCalendar.scss"
+import "./CreateEvent.scss"
 import axios from "axios";
+import { IoClose } from "react-icons/io5";
+import { FaRegClock, FaLongArrowAltRight  } from "react-icons/fa";
 
 function CreateEvent ({state, event}) {
 
-  const dialogRef = useRef();
+  const createDialogRef = useRef();
+  const colorPaletteRef = useRef();
   const [title, setTitle] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [nowColor, setNowColor] = useState('red')
+  const [isColorPalette, setColorPalette] = useState(false)
   
   const colorList = [
     { value: "FFCECE", label:"red"},
     { value: "FFFCBA", label:"yellow"},
     { value: "DDFBC6", label:"green"},
     { value: "E3EEFF", label:"blue"},
-    { value: "F0E8FF", label:"pupple"},
+    { value: "F0E8FF", label:"purple"},
   ]
   
   useEffect (() => {
-    dialogRef.current.showModal();
+    createDialogRef.current.showModal();
   }, [])
 
-  const closeModal = () => { 
-    dialogRef.current.close();
+  useEffect (() => {
+    {isColorPalette && colorPaletteRef.current.showModal()}
+  })
+
+  const closeCreateModal = () => { 
+    createDialogRef.current.close();
     state(!state)
+  };
+
+  const closePaletteModal = (e) => { 
+    const target = e.target;
+    const rect = target.getBoundingClientRect();
+    if (
+      rect.left > e.clientX ||
+      rect.right < e.clientX ||
+      rect.top > e.clientY ||
+      rect.bottom < e.clientY
+    ) {
+      colorPaletteRef.current.close();
+      setColorPalette(false)
+    }
   };
 
   const titleChange = (e) => {
     setTitle(e.target.value)
   }
 
-  const colorChange = (e) => {
-    setNowColor(e.target.value)
+  const openPalette = () => {
+    setColorPalette(true)
+  }
+
+  const changeColor = (e) => {
+    setNowColor(e)
+    setColorPalette(false)
   }
 
   const startDateChange = (e) => {
@@ -45,7 +72,7 @@ function CreateEvent ({state, event}) {
 
   const cencleInfo = (e) => {
     e.preventDefault()
-    dialogRef.current.close();
+    createDialogRef.current.close();
     state(!state)
   }
 
@@ -58,13 +85,10 @@ function CreateEvent ({state, event}) {
       end: new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1)).toISOString().split('T')[0],
       color: `#${colorList.find((v) => v.label === nowColor).value}`,
     }
-
-    console.log(newEvent)
-
     try {
       const res = await axios.post("", newEvent)
       event(prevEvent => [...prevEvent, newEvent])
-      dialogRef.current.close();
+      createDialogRef.current.close();
       state(!state)
     } catch (err) {
       console.log(err)
@@ -73,27 +97,45 @@ function CreateEvent ({state, event}) {
 
   return (
     <>
-      <dialog ref={dialogRef}>
+      <dialog ref={createDialogRef} className="create-event-modal">
         <div>
-          <header>
-            <h2>새로운 일정</h2>
-            <button onClick={closeModal}>닫기</button>
+          <header className="header-modal">
+            <div className="title-modal">
+              새로운 일정
+            </div>
+            <IoClose onClick={closeCreateModal} className="close-modal"/>
           </header>
 
           <form onSubmit={createInfo}>
-            <input type="text" value={title} onChange={titleChange} placeholder="제목" required/>
-            <div className={nowColor}></div>
+            <div className="title-input">
+              <input type="text" value={title} onChange={titleChange} placeholder="제목" required/>
+              <div className="color-select">
+                <div className={nowColor} onClick={openPalette}></div>
+                {isColorPalette &&
+                  <dialog ref={colorPaletteRef} onClick={closePaletteModal} className="color-palette-modal">
+                  {colorList.map((color) => (
+                    <div 
+                      key={color.label}
+                      className={`color-box ${color.label}`}
+                      onClick={() => changeColor(color.label)}
+                    ></div>
+                  ))}
+                </dialog>}
+              </div>
+            </div>
+            
+            <div className="date-section">
+              <div className="date-input">
+                <input type="date" value={startDate} onChange={startDateChange} placeholder="시작 일자" required/>
+                <FaLongArrowAltRight className="icon-size"/>
+                <input type="date" value={endDate} onChange={endDateChange} placeholder="종료 일자" required/>
+              </div>
+            </div>
 
-            <select name="colorSelect" id="colorSelect" value={nowColor} onChange={colorChange} required>
-              {colorList.map((color) => (
-                <option key={color.label} className={color.label} value={color.label}>
-                </option>
-              ))}
-            </select>
-            시작일<input type="date" value={startDate} onChange={startDateChange} required/>
-            종료일<input type="date" value={endDate} onChange={endDateChange} required/>
-            <button onClick={cencleInfo}>취소</button>
-            <input type="submit" value="추가" />
+            <div className="button-section">
+              <button onClick={cencleInfo} className="cencle-btn">취소</button>
+              <input type="submit" value="저장" className="submit-btn" />
+            </div>
           </form>
         </div>
       </dialog>

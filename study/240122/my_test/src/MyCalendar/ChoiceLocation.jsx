@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 
-function Weather () {
+function ChoiceLocation () {
   const openWeatherApiKey = '87246d75e1ce26e1392a087b3d1d88c5'
   const [lat, setLat] = useState('')
   const [lon, setLon] = useState('')
@@ -119,4 +119,4 @@ function Weather () {
   )
 }
 
-export default Weather
+export default ChoiceLocation

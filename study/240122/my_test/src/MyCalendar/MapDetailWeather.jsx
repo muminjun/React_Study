@@ -99,8 +99,7 @@ function FishSpot () {
   const openWeather = async (lat, lon) => {
     try{
       const res = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${openWeatherApiKey}&units=metric&lang=kr`)
-      console.log(res.data)
-
+      
       setSunrise(res.data.city.sunrise)
       setSunset(res.data.city.sunset)
       setWeatherData(res.data.list);

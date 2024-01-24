@@ -1,0 +1,203 @@
+.color-box.red, .red {
+  background-color: #FFCECE;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+}
+
+.color-box.yellow, .yellow {
+  background-color: #FFFCBA;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+}
+
+.color-box.green, .green {
+  background-color: #DDFBC6;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+}
+
+.color-box.blue, .blue {
+  background-color: #E3EEFF;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+}
+
+.color-box.purple, .purple {
+  background-color: #F0E8FF;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+}
+
+.create-event-modal {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  border: none;
+  border-radius: 10px;
+  padding: 30px 20px;
+  width: 350px;
+  height: 350px;
+  background-color: white;
+  text-align: left;
+  line-height: normal;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.create-event-modal::backdrop {
+  backdrop-filter: blur(2px);
+}
+
+.create-event-modal > div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.header-modal {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-modal {
+  font-weight: bold;
+  font-size: 40px;
+}
+
+.close-modal {
+  font-size: 35px;
+}
+
+.close-modal:active {
+  color: gray;
+}
+
+.title-input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.title-input input {
+  border: none;
+  background-color: white;
+  font-size: 30px;
+  width: 200px;
+}
+
+.title-input input:focus {
+  outline: none;
+}
+
+.color-select {
+  display: flex;
+}
+
+.color-select:active {
+  border: 2px solid #9CE9E9;
+  border-radius: 100%;
+}
+
+.color-palette-modal {
+  border: none;
+  border-radius: 10px;
+  background-color: white;
+  display: flex;
+  padding: 10px;
+}
+
+.icon-size {
+  font-size: 50px;
+}
+
+.date-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.date-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date-input input {
+  display: flex;
+  border: none;
+  position: relative;
+  background-color: white;
+  border-radius: 8px;
+  text-align: center;
+  align-items: center;
+  font-size: 20px;
+  height: 40px;
+}
+
+// 기존 input 옆 달력아이콘 없애는 거
+.date-input input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: transparent;
+}
+
+.date-input input::before {
+  content: attr(placeholder);
+  font-size: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.date-input input:focus {
+  outline: none;
+}
+
+.button-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cencle-btn {
+  border: none;
+  border-radius: 100px;
+  width: 180px;
+  height: 60px;
+  font-size: 30px;
+  background-color: #D9D9D9;
+}
+
+.cencle-btn:active {
+  border: none;
+  border-radius: 100px;
+  width: 180px;
+  height: 60px;
+  font-size: 30px;
+  background-color: #999999;
+}
+
+.submit-btn {
+  border: 3px solid #B8F8FB;
+  border-radius: 100px;
+  width: 180px;
+  height: 60px;
+  font-size: 30px;
+  background-color: white;
+}
+
+.submit-btn:active {
+  border: 3px solid #9CE9E9;
+  border-radius: 100px;
+  width: 180px;
+  height: 60px;
+  font-size: 30px;
+  color: white;
+  background-color: #9CE9E9;
+}
