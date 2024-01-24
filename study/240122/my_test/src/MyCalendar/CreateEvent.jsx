@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useRef} from "react";
-
 import "./MyCalendar.scss"
 import axios from "axios";
 
@@ -60,10 +59,12 @@ function CreateEvent ({state, event}) {
       color: `#${colorList.find((v) => v.label === nowColor).value}`,
     }
 
+    console.log(newEvent)
+
     try {
       const res = await axios.post("", newEvent)
-      console.log(res)
       event(prevEvent => [...prevEvent, newEvent])
+      dialogRef.current.close();
       state(!state)
     } catch (err) {
       console.log(err)
@@ -79,11 +80,11 @@ function CreateEvent ({state, event}) {
             <button onClick={closeModal}>닫기</button>
           </header>
 
-          <form>
+          <form onSubmit={createInfo}>
             <input type="text" value={title} onChange={titleChange} placeholder="제목" required/>
             <div className={nowColor}></div>
 
-            <select name="colorSelect" id="colorSelect " value={nowColor} onChange={colorChange} required>
+            <select name="colorSelect" id="colorSelect" value={nowColor} onChange={colorChange} required>
               {colorList.map((color) => (
                 <option key={color.label} className={color.label} value={color.label}>
                 </option>
@@ -92,7 +93,7 @@ function CreateEvent ({state, event}) {
             시작일<input type="date" value={startDate} onChange={startDateChange} required/>
             종료일<input type="date" value={endDate} onChange={endDateChange} required/>
             <button onClick={cencleInfo}>취소</button>
-            <input type="submit" value="추가" onSubmit={createInfo} />
+            <input type="submit" value="추가" />
           </form>
         </div>
       </dialog>

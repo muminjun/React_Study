@@ -4,11 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import MyCalendar from './MyCalendar/MyCalendar';
+import FishSpot from './MyCalendar/MapDetailWeather';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <MyCalendar />
+    {/* <MyCalendar /> */}
+    <FishSpot/>
   </React.StrictMode>
 );
 

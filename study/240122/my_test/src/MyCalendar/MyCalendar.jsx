@@ -15,10 +15,6 @@ function MyCalendar () {
   const [now, setNow] = useState('')
   const [eventList, setEventList] = useState([])
   const today = new Date().getDate()
-  const [weekWeather, setWeekWeather] = useState([])
-  const API_KEY = '87246d75e1ce26e1392a087b3d1d88c5'
-
-
 
   useEffect(() => {
     axios.get("")
@@ -28,25 +24,8 @@ function MyCalendar () {
       .catch((err) => {
         console.log(err)
       })
-
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const lat = pos.coords.latitude
-      const lon = pos.coords.longitude
-      getWeekWeather(lat, lon)
-    })
   }, [])
-
-  const getWeekWeather = async (lat, lon) => {
-    try{
-      const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`)
-      const weatherIcon = `http://openweathermap.org/img/wn/${res.data.weather[0].icon}.png`;
-      setWeekWeather(weatherIcon);  // 여기를 수정하였습니다.
-    } catch(err) {
-      console.log(err)
-    }
-  }
   
-
   const handleCreateEvent = () => {
     setIsCreateModal(prevState => !isCreateModal)
   }
@@ -73,14 +52,7 @@ function MyCalendar () {
     const day = document.createElement("a");
     day.classList.add("fc-daygrid-day-number");
     day.innerHTML = e.dayNumberText.replace("일", "");
-    
-    if (weekWeather) {
-      const icon = document.createElement("img");
-      icon.src = weekWeather;
-      return { html: day.outerHTML + icon.outerHTML };
-    } else {
-      return { html: day.outerHTML };
-    }
+    return { html: day.outerHTML };
   };
 
   return (
