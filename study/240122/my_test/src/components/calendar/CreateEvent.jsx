@@ -1,8 +1,8 @@
 import React, {useEffect, useState, useRef} from "react";
-import "./CreateEvent.scss"
+import "../../assets/calendar/CreateEvent.scss" 
 import axios from "axios";
 import { IoClose } from "react-icons/io5";
-import { FaRegClock, FaLongArrowAltRight  } from "react-icons/fa";
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 function CreateEvent ({state, event}) {
 

@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid"
 import interactionPlugin from '@fullcalendar/interaction';
 import momentPlugin from '@fullcalendar/moment'
 import locale from '@fullcalendar/core/locales/ko';
-import "./MyCalendar.scss" 
+import "../../assets/calendar/MyCalendar.scss"
 import DayClick from "./DayClick.jsx"
 import CreateEvent from "./CreateEvent.jsx";
 import axios from "axios";

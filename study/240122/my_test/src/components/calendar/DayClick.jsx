@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
-import "./MyCalendar.scss"
+import "../../assets/calendar/MyCalendar.scss" 
 
 function DayClick ({now, state}) {
   const dialogRef = useRef();
