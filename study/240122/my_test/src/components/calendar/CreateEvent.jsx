@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from "react";
-import "../../assets/calendar/CreateEvent.scss" 
+import "../../assets/scss/calendar/CreateEvent.scss" 
 import axios from "axios";
 import { IoClose } from "react-icons/io5";
 import { FaLongArrowAltRight } from "react-icons/fa";
@@ -123,7 +123,7 @@ function CreateEvent ({state, event}) {
                 </dialog>}
               </div>
             </div>
-            
+
             <div className="date-section">
               <div className="date-input">
                 <input type="date" value={startDate} onChange={startDateChange} placeholder="시작 일자" required/>

@@ -148,12 +148,17 @@
   color: transparent;
 }
 
-.date-input input::before {
+.date-input input::before  {
   content: attr(placeholder);
   font-size: 20px;
   width: 100%;
   height: 100%;
 }
+
+.date-input input:focus::before {
+  display: none;
+}
+
 
 .date-input input:focus {
   outline: none;

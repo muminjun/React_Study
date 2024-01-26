@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
-import "../../assets/calendar/MyCalendar.scss" 
+import "../../assets/scss/calendar/MyCalendar.scss" 
 
 function DayClick ({now, state}) {
   const dialogRef = useRef();
@@ -10,7 +10,7 @@ function DayClick ({now, state}) {
     { value: "FFFCBA", label:"yellow"},
     { value: "DDFBC6", label:"green"},
     { value: "E3EEFF", label:"blue"},
-    { value: "F0E8FF", label:"pupple"},
+    { value: "F0E8FF", label:"purple"},
   ]
 
   useEffect(() => {
