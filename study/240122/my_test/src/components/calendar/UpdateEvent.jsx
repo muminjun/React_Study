@@ -1,15 +1,14 @@
-import React, {useEffect, useState, useRef} from "react";
-import "../../assets/scss/calendar/CreateEvent.scss" 
+import React, {useState, useEffect, useRef} from "react";
 import axios from "axios";
+import "../../assets/scss/calendar/CreateEvent.scss" 
 
-function CreateEvent ({state, event}) {
-
-  const createDialogRef = useRef();
+function UpdateEvent({event, state, updateDialogRef}) {
+  
   const colorPaletteRef = useRef();
-  const [title, setTitle] = useState('')
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [nowColor, setNowColor] = useState('red')
+  const [title, setTitle] = useState(event.title);
+  const [startDate, setStartDate] = useState(event.start);
+  const [endDate, setEndDate] = useState(event.end);
+  const [nowColor, setNowColor] = useState('');
   const [isColorPalette, setColorPalette] = useState(false)
   const colorList = [
     { value: "FFCECE", label:"red"},
@@ -18,19 +17,16 @@ function CreateEvent ({state, event}) {
     { value: "E3EEFF", label:"blue"},
     { value: "F0E8FF", label:"purple"},
   ]
-  
-  // 일정생성 모달을 실행하는 코드
-  useEffect (() => {
-    createDialogRef.current.showModal();
+
+  // nowColor를 이벤트 라벨 컬러로 변환 + update모달 실행 코드
+  useEffect(() => {
+    updateDialogRef.current.showModal()
+    const colorItem = colorList.find((v) => `#${v.value}` === event.color);
+    setNowColor(colorItem.label)
   }, [])
 
-  // 컬러팔레트 모달을 실행하는 코드
-  useEffect (() => {
-    {isColorPalette && colorPaletteRef.current.showModal()}
-  })
-
-  // 일정생성 모달을 닫는 코드
-  const closeCreateModal = (e) => {
+  // update 모달 닫는 코드
+  const closeUpdateModal = (e) => {
     const target = e.target;
     const rect = target.getBoundingClientRect();
     if (
@@ -39,10 +35,15 @@ function CreateEvent ({state, event}) {
       rect.top > e.clientY ||
       rect.bottom < e.clientY
     ) {
-    createDialogRef.current.close();
+    updateDialogRef.current.close();
     state(!state)
     }
   };
+
+  // 컬러팔레트 모달을 실행하는 코드
+  useEffect (() => {
+    {isColorPalette && colorPaletteRef.current.showModal()}
+  })
 
   // 컬러 팔레트 모달을 닫는 코드
   const closePaletteModal = (e) => { 
@@ -64,12 +65,12 @@ function CreateEvent ({state, event}) {
     setTitle(e.target.value)
   }
 
-  // 컬러 팔레트 조건을 true로 변경하는 코드
+  // 컬러 팔레트 모달 조건을 true로 변경하는 코드
   const openPalette = () => {
     setColorPalette(true)
   }
 
-  // 컬러팔레트에서 얻은 컬러로 nowColor를 변경하고, 컬러팔레트 모달닫기를 실행하는 코드
+  // 컬러팔레트에서 얻은 컬러로 nowColor를 변경하고, 컬러팔레트 모달닫기 실행하는 코드
   const changeColor = (e) => {
     setNowColor(e)
     setColorPalette(false)
@@ -88,24 +89,23 @@ function CreateEvent ({state, event}) {
   // 취소버튼 코드
   const cencleInfo = (e) => {
     e.preventDefault()
-    createDialogRef.current.close();
-    state(!state)
+    updateDialogRef.current.close();
+    state(!state);
   }
 
-  // 추가버튼 코드 + axios 요청 + 생성모달 닫기
-  const createInfo = async (e) => {
+  // update axios 코드
+  const updateEvent = async (e) => {
     e.preventDefault()
 
-    const newEvent = {
+    const updateInfo = {
       title: title,
       start: startDate,
       end: new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1)).toISOString().split('T')[0],
       color: `#${colorList.find((v) => v.label === nowColor).value}`,
     }
     try {
-      const res = await axios.post("//", newEvent)
-      event(prevEvent => [...prevEvent, newEvent])
-      createDialogRef.current.close();
+      await axios.put(`${event.id}`, updateInfo);
+      updateDialogRef.current.close();
       state(!state)
     } catch (err) {
       console.log(err)
@@ -114,21 +114,21 @@ function CreateEvent ({state, event}) {
 
   return (
     <>
-      <dialog ref={createDialogRef} onClick={isColorPalette ? null : closeCreateModal} className="create-event-modal">
+      <dialog ref={updateDialogRef} onClick={isColorPalette ? null : closePaletteModal} className="create-event-modal">
         <header className="header-modal">
-          새로운 일정
+          이벤트 편집
         </header>
-        <form onSubmit={createInfo} className="form-section">
+        <form onSubmit={updateEvent} className="form-section">
           <div className="title-input">
-            <input type="text" value={title} onChange={titleChange} placeholder="제목(최대 15자)" maxLength="14" required/>
-            <div className={`${nowColor}-btn`} onClick={openPalette}></div>
+            <input type="text" value={title} onChange={titleChange} placeholder="제목" required/>
+            <div className={nowColor} onClick={openPalette}></div>
             <div>
               {isColorPalette &&
                 <dialog ref={colorPaletteRef} onClick={closePaletteModal} className="color-palette-modal">
                 {colorList.map((color) => (
                   <div 
                     key={color.label}
-                    className={`${color.label}-btn`}
+                    className={`color-box ${color.label}`}
                     onClick={() => changeColor(color.label)}
                   ></div>
                 ))}
@@ -163,7 +163,7 @@ function CreateEvent ({state, event}) {
 
           <div className="button-section">
             <button onClick={cencleInfo} className="cencle-btn">취소</button>
-            <input type="submit" value="저장" className="submit-btn" />
+            <input type="submit" value="수정" className="submit-btn" />
           </div>
         </form>
       </dialog>
@@ -171,4 +171,4 @@ function CreateEvent ({state, event}) {
   )
 }
 
-export default CreateEvent
+export default UpdateEvent;

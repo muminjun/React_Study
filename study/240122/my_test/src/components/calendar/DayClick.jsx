@@ -1,10 +1,24 @@
 import React, {useState, useRef, useEffect} from "react";
-import "../../assets/scss/calendar/MyCalendar.scss" 
+import "../../assets/scss/calendar/DayClick.scss"
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import UpdateEvent from "./UpdateEvent";
 
 function DayClick ({now, state}) {
-  const dialogRef = useRef();
+
+  const detailDialogRef = useRef();
+  const optionDialogRef = useRef();
+  const updateDialogRef = useRef();
+  const deleteDialogRef = useRef();
+
+  const [selectedEvent, setSelectedEvent] = useState('');
+
+  const [isOptionModal, setIsOptionModal] = useState(false)
+  const [isOptionModalPos, setIsOptionModalPos] = useState(null)
+  const [isUpdateModal, setIsUpdateModal] = useState(false)
+  const [isDeleteModal, setIsDeleteModal] = useState(false)
+  
   const [day, setDay] = useState('')
-  const [nowColor, setNowColor] = useState('')
+  const [nowColor, setNowColor] = useState([])
   const colorList = [
     { value: "FFCECE", label:"red"},
     { value: "FFFCBA", label:"yellow"},
@@ -13,29 +27,24 @@ function DayClick ({now, state}) {
     { value: "F0E8FF", label:"purple"},
   ]
 
+  // now(클릭한 해당 일자 정보)에서 라벨 색을 받아오는 코드
   useEffect(() => {
-    if (now.dayIndex === 0) {
-      setDay('일요일')
-    } else if (now.dayIndex === 1 ) {
-      setDay('월요일')
-    } else if (now.dayIndex === 2 ) {
-      setDay('화요일')
-    } else if (now.dayIndex === 3 ) {
-      setDay('수요일')
-    } else if (now.dayIndex === 4 ) {
-      setDay('목요일')
-    } else if (now.dayIndex === 5 ) {
-      setDay('금요일')
-    } else if (now.dayIndex === 6 ) {
-      setDay('토요일')
-    }
+    const colors = now.events.map(e => {
+      const colorItem = colorList.find((v) => `#${v.value}` === e.color);
+      return colorItem ? colorItem.label : '';
+    });
+    setNowColor(colors);
+  }, [now.events]);
 
-    // 실험해보기
-    setNowColor(colorList.find((v) => v.value === now.events.color))
-    dialogRef.current.showModal();
-  })
+  // now에서 무슨 요일인지 알아냄 + detail 모달 열기
+  useEffect(() => {
+    const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+    setDay(days[now.dayIndex]);
+    detailDialogRef.current.showModal();
+  }, [now.dayIndex]);
 
-  const closeModal = (e) => { 
+  // detail 모달 닫기
+  const closeDetailModal = (e) => {
     const target = e.target;
     const rect = target.getBoundingClientRect();
     if (
@@ -44,32 +53,107 @@ function DayClick ({now, state}) {
       rect.top > e.clientY ||
       rect.bottom < e.clientY
     ) {
-      dialogRef.current.close();
+      detailDialogRef.current.close();
       state(!state)
     }
   };
 
+  // 편집, 삭제하는 옵션모달 상태를 true로 바꾸는 코드
+  const handleOpenOption = (selectDate, e) => {
+    setSelectedEvent(selectDate);
+    setIsOptionModal(true);
+    setIsOptionModalPos({ x: e.clientX, y: e.clientY });
+  }
+
+  // 옵션모달 열기
+  useEffect(() => {
+    if (isOptionModal) {
+      optionDialogRef.current.showModal();
+    }
+  }, [isOptionModal]);
+
+  // 옵션 모달 닫기
+  const closeOptionModal = (e) => {
+    const target = e.target;
+    const rect = target.getBoundingClientRect();
+    if (
+      rect.left > e.clientX ||
+      rect.right < e.clientX ||
+      rect.top > e.clientY ||
+      rect.bottom < e.clientY
+    ) {
+      optionDialogRef.current.close();
+      setIsOptionModal(false)
+    }
+  }
+
+  // 일정 편집을 하기 위해 클릭한 날의 정보를 selectEvent에 저장하고 + 수정창 상태를 true로 변경
+  const handleUpdateEvent = (e) => {
+    setSelectedEvent(e);
+    setIsUpdateModal(true);
+  }
+
+  // 일정 삭제를 하기 위해 클릭한 날의 정보를 selectEvent에 저장하고 + 삭제창 상태를 true로 변경
+  const handleDeleteEvnet = () => {
+    setIsDeleteModal(true)
+  }
+  
+  // 삭제 창 모달
+  useEffect(() => {
+    if (isDeleteModal) {
+      deleteDialogRef.current.showModal();
+    }
+  }, [isDeleteModal]);
+
   return (
     <> 
-      <dialog ref={dialogRef} onClick={closeModal}>
-        <div>
-          <header>
-            <div>{now.date.slice(8)}</div>
-            <div>{day}</div>
-          </header>
+      <dialog ref={detailDialogRef} onClick={isOptionModal? null : closeDetailModal} className="date-detail-modal">
+        <header className="calendar-detail-header">
+          <span>{now.date.slice(8)}</span>
+          <p>{day}</p>
+        </header>
 
-          <hr />
-          {now.events.map((event, index) => (
-            <div key={index}>
-              <div>
-                <h3 className={nowColor}>{event.title}</h3>
-              </div>
-
-              <p>시작일: {event.start}</p>
-              <p>종료일: {event.end}</p> 
+        <hr />
+        {now.events.map((event, index) => (
+          <div key={index} className="calendar-detail-body">
+            <div className="calendar-detail-title">
+              <p className={nowColor[index]}>{event.title}</p>
+              <HiOutlineDotsVertical onClick={(e) => handleOpenOption(event, e)} className="icon-size"/>
             </div>
-          ))}
-        </div>
+
+            {isOptionModal && selectedEvent === event &&
+              <dialog
+                ref={optionDialogRef} 
+                onClick={closeOptionModal} 
+                className="calendar-detail-option-modal"
+                style={{top:`${isOptionModalPos.y}px`, left:`${isOptionModalPos.x}px`}}
+              >
+                <div onClick={() => handleUpdateEvent(event)}>
+                  <span>편집</span>
+                  {isUpdateModal && 
+                    <UpdateEvent 
+                      event={selectedEvent}
+                      state={state} 
+                      updateDialogRef={updateDialogRef} 
+                    />
+                  }
+                </div>
+                <div onClick={handleDeleteEvnet}>
+                <span>삭제</span>
+                  {isDeleteModal &&
+                    <dialog ref={deleteDialogRef}>이 일정을 삭제할까요?</dialog>
+                  }
+                </div>
+              </dialog>
+            }
+
+            <div className="calendar-detail-date">
+              <span>{event.start}</span>
+              ~
+              <span>{event.end}</span> 
+            </div>
+          </div>
+        ))}
       </dialog>
     </>
   )

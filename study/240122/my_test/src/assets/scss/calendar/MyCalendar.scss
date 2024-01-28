@@ -1,3 +1,16 @@
+.fc {
+  display: flex;
+  flex-direction: column;
+  font-size: 1em;
+  padding: 5px;
+}
+
+.fc table {
+  border-collapse: separate; 
+  border-spacing: 0px;
+  font-size: 1em;
+}
+
 .fc-day-sun a {
   color: #FF5858;
 }
@@ -29,39 +42,4 @@
   border-radius: 15px;
   padding:5px;
   font-weight: bold;
-}
-
-.red {
-  background-color:#FFCECE;
-  border-radius: 100%;
-  width: 30px;
-  height: 30px;
-}
-
-.yellow {
-  background-color:#FFFCBA;
-  border-radius: 100%;
-  width: 30px;
-  height: 30px;
-}
-
-.green {
-  background-color:#DDFBC6;
-  border-radius: 100%;
-  width: 30px;
-  height: 30px;
-}
-
-.blue {
-  background-color:#E3EEFF;
-  border-radius: 100%;
-  width: 30px;
-  height: 30px;
-}
-
-.purple {
-  background-color:#F0E8FF;
-  border-radius: 100%;
-  width: 30px;
-  height: 30px;
 }

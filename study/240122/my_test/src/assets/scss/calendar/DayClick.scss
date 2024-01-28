@@ -1,0 +1,183 @@
+$red:#FFCECE;
+$yellow:#FFFCBA;
+$green:#DDFBC6;
+$blue:#E3EEFF;
+$purple:#F0E8FF;
+
+.red {
+  background-color: $red;
+  border-radius: 10px;
+  width: 100%;
+  height: 40px;
+}
+
+.yellow {
+  background-color: $yellow;
+  border-radius: 10px;
+  width: 100%;
+  height: 40px;
+}
+
+.green {
+  background-color: $green;
+  border-radius: 10px;
+  width: 100%;
+  height: 40px;
+}
+
+.blue {
+  background-color: $blue;
+  border-radius: 10px;
+  width: 100%;
+  height: 40px;
+}
+
+.purple {
+  background-color: $purple;
+  border-radius: 10px;
+  width: 100%;
+  height: 40px;
+}
+
+.date-detail-modal {
+  position: fixed;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  border: none;
+  border-radius: 30px;
+  padding: 30px 20px;
+  width: 100%;
+  height: 50%;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &::backdrop{
+    backdrop-filter: blur(2px);
+  }
+}
+
+.icon-size {
+  width: 50px;
+  height: inherit;
+  padding: 10px;
+  // display: flex;
+  // align-items: center;
+  cursor: pointer;
+  &:active {
+    color: gray;
+  }
+}
+
+.calendar-detail-header {
+  position: sticky;
+  top: -4px;
+  display: flex;
+  font-weight: bold;
+  align-items: flex-end;
+  background-color: white;
+  height: 18%;
+  width: 100%;
+
+  span {
+    font-size: 40px;
+  }
+
+  p {
+    font-size: 30px;
+    padding-left: 20px;
+  }
+}
+
+hr {
+  margin: 10px 0 10px 0;
+  border-color: #6AE3E3;
+  border-width: 1px;
+}
+
+.calendar-detail-body {
+  padding: 10px;
+}
+
+.calendar-detail-title {
+  display: flex;
+  align-items: center;
+
+  
+  p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    height: 100%;
+  }
+}
+
+.calendar-detail-date {
+  display: flex;
+  justify-content: space-evenly;
+  padding-right: 10px;
+  span {
+    display: flex;
+    color: gray;
+    font-size: 20px;
+  }
+}
+
+.calendar-detail-option-modal {
+  position: absolute;
+  border: 1px solid rgb(218, 218, 218);
+  box-shadow: 0 5px 28px rgba(187, 187, 187, 0.25), 0 5px 5px rgba(175, 175, 175, 0.22);
+  border-radius: 10px;
+  background-color: white;
+
+  &::backdrop {
+    background: none;
+  }
+
+  div {
+    font-size: 25px;
+    width: 100%;
+    padding: 10px 5px 10px 5px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .calendar-detail-title > p {
+    font-size: 20px;
+  }
+
+  .calendar-detail-date > span {
+    font-size: 15px;
+  }
+}
+
+@media screen and (min-width: 350px) and (max-width: 410px) {
+  .calendar-detail-title > p {
+    font-size: 25px;
+  }
+
+  .calendar-detail-header {
+    top: -31px;
+  }
+
+  .calendar-detail-date > span {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 411px) and (max-width: 420px) {
+  .calendar-detail-title > p {
+    font-size: 30px;
+  }
+
+  .calendar-detail-header {
+    top: -32px;
+  }
+}
+
+@media screen and (min-width: 421px) {
+  .calendar-detail-title > p {
+    font-size: 35px;
+  }
+}
