@@ -57,15 +57,15 @@ function MyCalendar () {
   ])
 
   useEffect(() => {
-    // axios.get("")
-    //   .then((res) => {
-    //     if (res.data && res.data.length > 0) {
-    //       setEventList(res.data)
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //   })
+    axios.get("")
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setEventList(res.data)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   
