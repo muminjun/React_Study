@@ -1,0 +1,5 @@
+Calling default behavior upon 'streamDestroyed' event dispatched by 'Session'
+
+openvidu-browser.js?v=2878c606:972 Inbound RTCPeerConnection with id [c2a79e39-0da5-488a-8d06-0da489d29f79] from 'Stream' with id [str_CAM_BQTQ_con_NpuS8RStks] is now closed
+
+openvidu-browser.js?v=2878c606:972 Remote MediaStream from 'Stream' with id [str_CAM_BQTQ_con_NpuS8RStks] is now disposed
