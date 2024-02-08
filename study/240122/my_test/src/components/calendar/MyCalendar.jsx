@@ -56,17 +56,17 @@ function MyCalendar () {
     color:"#F0E8FF",},
   ])
 
-  useEffect(() => {
-    axios.get("")
-      .then((res) => {
-        if (res.data && res.data.length > 0) {
-          setEventList(res.data)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }, [])
+  // useEffect(() => {
+  //   axios.get("")
+  //     .then((res) => {
+  //       if (res.data && res.data.length > 0) {
+  //         setEventList(res.data)
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }, [])
 
   
   // 일정 생성 상태를 true/false
